@@ -1,5 +1,5 @@
-import "./Dropdown.css";
-import { useState, useRef } from "react";
+import { useState } from "react";
+import useClickOutside from "../custom Hooks/useClickOutside";
 import styled from "styled-components";
 
 export default function Dropdown() {
@@ -10,6 +10,8 @@ export default function Dropdown() {
   const handleOpen = () => {
     setOpen((prev) => !prev);
   };
+
+  const dropDownRef = useClickOutside(handleOpen);
 
   const handleAddOption = (event) => {
     event.stopPropagation();
@@ -29,7 +31,7 @@ export default function Dropdown() {
 
   return (
     <>
-      <SelectDropDown role="select">
+      <SelectDropDown role="select" ref={dropDownRef}>
         <SelectedOptions role="input">
           {selectedInputs.length > 0
             ? selectedInputs.map((input) => (
@@ -107,7 +109,6 @@ const SelectedOptions = styled.div`
   align-items: center;
   padding: 5px;
   position: relative;
-  animation: 0.5s all ease-in-out;
 `;
 
 const OptionList = styled.div`
@@ -132,8 +133,10 @@ const DropDownArrow = styled.span`
   cursor: pointer;
   right: 0;
   svg {
+    padding-left: 10px;
     width: 35px;
     height: 35px;
     color: black;
+    transition: transform 0.5s ease-in-out;
   }
 `;
